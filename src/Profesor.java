@@ -1,10 +1,8 @@
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class Profesor implements Serializable {
 
 	private static final long serialVersionUID = -7556292344769335529L;
-
 
 	private int idprofesor;
 	private String nombre;
@@ -58,8 +56,13 @@ public class Profesor implements Serializable {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		stringBuilder.append("Nombre: ").append(nombre)
-					 .append(", Especialidad: ").append(espe).append(", Asignatura: ")
-					 .append(Arrays.toString(asignaturas));
+					 .append(", Especialidad: ").append(espe).append("\n");
+			for(Asignatura asignatura: asignaturas){
+				stringBuilder.append("\t")
+							 .append("Asignatura: ")
+							 .append(asignatura)
+							 .append("\n");
+			}
 		return stringBuilder.toString();
 
 	}

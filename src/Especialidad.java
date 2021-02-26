@@ -34,6 +34,6 @@ public class Especialidad implements Serializable {
 
 	@Override
 	public String toString() {
-		return nombreespe;
+		return id + " - " + nombreespe;
 	}
 }

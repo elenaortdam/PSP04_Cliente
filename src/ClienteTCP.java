@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class ClienteTCP {
 
@@ -20,7 +19,6 @@ public class ClienteTCP {
 		ObjectInputStream fentrada = new ObjectInputStream(cliente.getInputStream());
 		int id = (int) fentrada.readObject();
 		System.out.printf("SOY EL CLIENTE %d%n", id);
-		System.out.println("==============================================");
 
 		BufferedReader entradaDatos = new BufferedReader(new InputStreamReader(System.in));
 		String cadena = "";
@@ -31,24 +29,27 @@ public class ClienteTCP {
 			do {
 				try {
 					cadenaValida = true;
+					System.out.println("====================================================");
 					System.out.println("Introduce identificador a consultar (* para salir):");
 					cadena = entradaDatos.readLine();
 					validarCadena(cadena);
 				} catch (Exception e) {
-					System.out.printf("%s. Introduce la cadena de nuevo", e.getLocalizedMessage());
+					System.out.printf("%s. Introduce la cadena de nuevo\n", e.getLocalizedMessage());
 					cadenaValida = false;
 				}
 			} while (!cadenaValida);
 			fsalida.reset();
 			fsalida.writeObject(cadena);
 
-			//OBTENER PRIMER OBJETO ENVIADO POR EL SERVIDOR
-			Profesor profesor = (Profesor) fentrada.readObject();
-			System.out.println(profesor.toString());
+			if (!cadena.equals("*")) {
+				//OBTENER PRIMER OBJETO ENVIADO POR EL SERVIDOR
+				Profesor profesor = (Profesor) fentrada.readObject();
+				System.out.println(profesor.toString());
+			}
 		}
 
-//		fsalida.close();
-//		fentrada.close();
+		fsalida.close();
+		fentrada.close();
 		System.out.println("Fin de proceso... ");
 		entradaDatos.close();
 		cliente.close();
@@ -66,9 +67,8 @@ public class ClienteTCP {
 		if (cadena.equals("*")) {
 			return;
 		}
-		Integer identificador = null;
 		try {
-			identificador = Integer.parseInt(cadena);
+			Integer.parseInt(cadena);
 		} catch (NumberFormatException e) {
 			throw new IllegalArgumentException("El identificador tiene que ser un número");
 		}
